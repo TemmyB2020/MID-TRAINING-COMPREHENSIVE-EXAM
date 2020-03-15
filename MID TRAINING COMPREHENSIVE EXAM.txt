@@ -1,0 +1,118 @@
+
+
+	TEMITOPE BABALOLA(HERBERTS)
+	
+	MID TRAINING COMPREHENSIVE EXAM
+
+	CREATE TABLE EmployeeDetails (EmpID INT PRIMARY KEY NOT NULL, FullName varchar (50) NOT NULL, ManagerID INT not null, DateOfJoining DATE not null);
+	INSERT into EmployeeDetails (EmpID, FullName, ManagerID, DateOfJoining)
+	VALUES (121, 'John' + ' ' + 'Snow', 321, '01/31/2014');
+	INSERT INTO EmployeeDetails (EmpID, FullName, ManagerID, DateOfJoining)
+	VALUES (321, 'Walter' + ' ' + 'White', 986, '01/30/2015');
+	INSERT INTO EmployeeDetails (EmpID, FullName, ManagerID, DateOfJoining)
+	VALUES (421, 'Kuldeep' + ' ' + 'Rana', 876, '11/27/2016');
+
+
+	CREATE TABLE EmployeeSalary (EmpID Int not null foreign key references EmployeeDetails (EmpID), Project NVarchar (50) not null, Salary money not null);
+	Insert into EmployeeSalary (EmpID, Project, Salary)
+	VALUES (121, 'P1', 8000);
+	INSERT INTO EmployeeSalary (EmpID, Project, Salary)
+	VALUES (321, 'P2', 1000);
+	Insert into EmployeeSalary (EmpID, Project, Salary)
+	VALUES (421, 'P1', 12000);
+
+	1.	SELECT COUNT (*) AS 'Number of Employees' from EmployeeDetails D
+		JOIN EmployeeSalary S on D.EmpID = S.EmpID
+		WHERE S.Project = 'P1'
+
+
+	2.	SELECT D.FullName from EmployeeDetails D
+		JOIN EmployeeSalary S on D.EmpID = S.EmpID
+		WHERE S.Salary >= 5000 and S.Salary <= 10000;
+
+
+	3.	SELECT COUNT (D.EmpID) AS 'COUNT OF EMPLOYEES' , S.Project
+		FROM EmployeeDetails D
+		JOIN EmployeeSalary S on D.EmpID = S.EmpID
+		GROUP BY S.Project
+		ORDER by S.Project Desc;
+
+	4.	SELECT SUBSTRING (FullName, 0, CHARINDEX (' ', FullName, 0)) AS 'FIRST NAME'
+		FROM EmployeeDetails;
+
+
+	5.	SELECT D.FullName, S.Salary
+		FROM EmployeeDetails D
+		LEFT JOIN EmployeeSalary S on D.EmpID = S.EmpID
+
+
+	6.	SELECT D.FullName from EmployeeDetails D
+		JOIN EmployeeDetails S
+		ON D.EmpID = S.ManagerID;
+
+
+	7.	SELECT D.FullName, S.Salary
+		FROM EmployeeDetails D
+		JOIN EmployeeSalary S on D.EmpID = S.EmpID
+
+
+	8.	SELECT D.EmpID, D.FullName, S.Project, COUNT (*) AS 'NUMBER OF OCCURENCES'
+		FROM EmployeeDetails D
+		JOIN EmployeeSalary S on D.EmpID = S.EmpID
+		GROUP BY D.EmpID, D.FullName, S.Project
+		HAVING COUNT (*) >1;
+
+
+	9.	DELETE R2 FROM EmployeeDetails R1, EmployeeDetails R2
+		WHERE R2.EmpID < R1.EmpID
+		AND R2.FullName = R1.FullName
+		AND R2.ManagerID = R1.ManagerID
+		AND R2.DateOfJoining = R1.DateOfJoining;
+
+
+	10.	SELECT * FROM EmployeeDetails
+		WHERE (EmpID % 2) = 1;
+
+
+	11.	SELECT * FROM EmployeeDetails
+		WHERE (EmpID % 2) = 0;
+
+
+	12.	SELECT EmpID,FullName, ManagerID, DateOfJoining
+		INTO EmployeeDetailsDuplicate
+		FROM EmployeeDetails
+
+
+	13.	SELECT TOP 0 * INTO EmployeeSalaryNew FROM EmployeeSalary
+
+
+	14.	SELECT EmpID FROM EmployeeDetails
+		INTERSECT 
+		SELECT EmpID FROM EmployeeSalary
+
+
+	15.	SELECT D.EmpID, D.FullName, D.ManagerID, D.Dateofjoining FROM EmployeeDetails D
+		RIGHT JOIN EmployeeSalary S ON D.EmpID=S.EmpID
+		WHERE D.FullName = NULL 
+
+
+	16.	SELECT GETDATE() AS 'DATE OF TODAY'
+
+
+	17.	SELECT * FROM EmployeeDetails 
+		WHERE YEAR (DateOfJoining) = 2016
+
+
+	18.	SELECT TOP 2 * FROM EmployeeDetailsDuplicate
+
+
+	19.	SELECT TOP 2 Salary
+		FROM (SELECT DISTINCT TOP 2 Salary
+		FROM EmployeeSalary ORDER BY Salary DESC)
+		AS TEMP
+		ORDER BY Salary;
+
+
+	20.	SELECT Salary from EmployeeSalary
+		ORDER BY Salary DESC OFFSET 3-1 ROW
+		FETCH NEXT 1 ROW ONLY;
